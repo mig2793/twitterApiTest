@@ -1,0 +1,64 @@
+<section>
+    <div class="input-container">
+        <i class="fa fa-times" aria-hidden="true" (click)="searchText = ''"></i>
+        <input type="text" [(ngModel)]="searchText" name="search" #search="ngModel"
+            (change)="(!search.errors?.pattern) ? searchTweetsText() : ''" placeholder="Buscar tweet"
+            pattern="^[a-zA-ZÀ-ÿ-Z0-9_ `¡!'’()_=[\]:;,.<>+\/?¿-]*$">
+        <div *ngIf="search.errors?.pattern" class="alert alert-danger">
+            No se permiten caracteres especiales
+        </div>
+    </div>
+    <div class="container">
+        <section class="flex" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll()">
+            <div class="content-card" [ngStyle]="{'z-index': tweets.length - i}"
+                *ngFor="let tweet of tweets; let i = index">
+                <div class="color-grey cards card-front">
+                    <div class="flex">
+                        <div class="img-profile">
+                            <img [src]="tweet.user?.profile_image_url" alt="">
+                        </div>
+                        <div>
+                            <span class="font-big d-block">{{tweet.user?.name.slice(0,9)}}</span>
+                            <span>@{{tweet.user?.screen_name}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <span>
+                        <p>
+                            {{tweet.full_text.slice(0,150)}} {{tweet.full_text.length > 150 ? '...':''}}
+                        </p>
+                    </span>
+                    <hr>
+                    <div class="flex flex-between">
+                        <a href="https://twitter.com/share?url=https://twitter.com/{{tweet.user?.screen_name}}/status/{{tweet?.id_str}}"
+                            class="twitter-share-button" data-size="large" data-show-count="false" target="_blank">
+                            <i class="fa fa-reply" aria-hidden="true"></i>
+                        </a>
+                        <i class="fa fa-retweet" aria-hidden="true"
+                            [ngStyle]="{'color': tweet.retweeted ? '#00acee' : '#737373'}"
+                            (click)="retweet(tweet.id_str)"></i>
+                        <i class="fa fa-star" [ngStyle]="{'color': tweet.favorited ? '#00acee' : '#737373'}"
+                            aria-hidden="true" (click)="favoriteTwitter(tweet.id_str)"></i>
+                    </div>
+                    <img class="img-tweet-icon" src="assets/img/icon-twitter.png">
+                </div>
+                <div [ngClass]="classAnimation[i]" class="color-white cards card-behind background-blue card-absolute">
+                    <div>
+                        <hr>
+                        <span>{{tweet.created_at | date:'shortTime'}} - {{tweet.created_at | date:'mediumDate'}}</span>
+                        <hr>
+                        <div>
+                            {{tweet.full_text}}
+                        </div>
+                    </div>
+                    <div class="more-content" (click)="openCard(i)">
+                        <span *ngIf="!openTextCard[i]">... mas</span>
+                        <i [ngClass]="openTextCard[i] ? 'fa-chevron-up' : 'fa-chevron-down'" class="fa"
+                            aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
