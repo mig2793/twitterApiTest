@@ -2,6 +2,12 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.2.
 
+# DESPLIGUE SERVER NODEJS
+
+Antes de desplegar el proyecto front, se debe subir los servicios de nodeJs que se comunican con el api de twitter:
+Ingresar a la carpeta server y dentro ejecutar `node server.js`, esto levantará los servicios en http://localhost:3000
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
